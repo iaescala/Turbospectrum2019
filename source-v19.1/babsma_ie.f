@@ -494,39 +494,43 @@ cccc          print*,'reading ntau again ',ntau
 *********************************************************
 ****** ADDED BY I.ESCALA 11/18/2021 *********************
 
- 666      if (mocode(2:4).eq.'sph') then
-            print*,'This model is SPHERICALLY SYMMETRIC'
-          else if (mocode(2:3).eq.'pp') then
-            print*,'This model is PLANE PARALLEL'
-          endif
+ 666      if (mocode(2:12).eq.'sphINTERPOL'.or.
+     &        mocode(2:11).eq.'ppINTERPOL') then
+ 
+              if (mocode(2:4).eq.'sph') then
+                print*,'This model is SPHERICALLY SYMMETRIC'
+              else if (mocode(2:3).eq.'pp') then
+                print*,'This model is PLANE PARALLEL'
+              endif
       
-          read(mocode(16:17),*) ntau  
+              read(mocode(16:17),*) ntau  
           
-          if (ntau.gt.ndp) then
-            print*,'ntau = ',ntau,' greater than ndp = ',ndp
-            print*,'Increase ndp'
-            stop
-          endif
+              if (ntau.gt.ndp) then
+                print*,'ntau = ',ntau,' greater than ndp = ',ndp
+                print*,'Increase ndp'
+                stop
+              endif
             
-          do k=1,ntau
-            read(imod,*) tau(k),T(k),pe(k),pgl(k),dum,rr(k),dum
-            tau(k)=10.**tau(k)
-            pe(k)=10.**pe(k)
-            pgl(k)=10.**pgl(k)
-          enddo
+              do k=1,ntau
+                read(imod,*) tau(k),T(k),pe(k),pgl(k),dum,rr(k),dum
+                tau(k)=10.**tau(k)
+                pe(k)=10.**pe(k)
+                pgl(k)=10.**pgl(k)
+              enddo
             
-          xls=5000.
-          print*,'Beware !! Lambda standard assumed to be 5000 A'
-          print*,' Make sure it is consistent with the model'
+              xls=5000.
+              print*,'Beware !! Lambda standard assumed to be 5000 A'
+              print*,' Make sure it is consistent with the model'
           
-          if(.not.xifix) then
-            print*,' xifix=.false., but where is microturbulent',
-     &              'velocity given??'
-            stop
-          else
-            do k=1,ntau
-              xi(k)=xic
-            enddo
+              if(.not.xifix) then
+                print*,' xifix=.false., but where is microturbulent',
+     &                 'velocity given??'
+                stop
+              else
+                do k=1,ntau
+                  xi(k)=xic
+                enddo
+              endif
           endif
    
 ********* END ADDED BY I.ESCALA **************************       
